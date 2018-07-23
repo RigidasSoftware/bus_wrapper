@@ -7,8 +7,6 @@ class Bus {
         let bus;
         let on_restart = options.on_restart;
         
-        let self = this;
-
         let init = () => {
 
             bus = service_bus.bus(options, implOpts);
@@ -45,13 +43,13 @@ class Bus {
 
         };
 
-        this.start = () => {
+        let start = () => {
             try {
-                self.init();
-                
+                init();
+
                 bus.once('channel.close', event => {
                     console.error('channel closed');
-                    self.failure(event);
+                    failure(event);
                 });
 
                 console.log('bus connected');
@@ -63,29 +61,29 @@ class Bus {
             }
         };
 
-        this.failure = event => {
+        let failure = event => {
             console.error(event);
             try {
-                self.try_restart();
+                try_restart();
             }
             catch (e) {
                 console.error(e.stack || e);
             }
         };
 
-        this.tick;
-        this.try_restart = () => {
-            self.tick = setInterval(() => {
-                if (self.start() && self.tick) {
+        let tick;
+        let try_restart = () => {
+            tick = setInterval(() => {
+                if (start() && tick) {
                     if(on_restart) {
                         on_restart(bus);
                     }
-                    clearInterval(self.tick);
+                    clearInterval(tick);
                 }
             }, 10000);
         };
 
-        this.start();
+        start();
 
         return bus;
     }
