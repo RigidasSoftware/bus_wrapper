@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "servicebus": "^2.2.0"
+    "servicebus": "^2.3.3"
   },
   "devDependencies": {},
   "scripts": {
